@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>物业管理AI系统 - 演示导航</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .title {
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 16px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .version-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .version-item {
+            display: block;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .version-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .version-item:hover::before {
+            left: 100%;
+        }
+
+        .version-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .version-item:active {
+            transform: translateY(-1px);
+        }
+
+        .version-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+
+        .version-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .version-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-left: 36px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.3);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .info-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .info-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-list {
+            list-style: none;
+            color: #666;
+            font-size: 14px;
+            line-height: 2;
+        }
+
+        .info-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-list li::before {
+            content: '✓';
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            animation: fadeIn 1s ease 0.5s backwards;
+        }
+
+        .github-link {
+            display: inline-block;
+            padding: 12px 30px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .github-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .title {
+                font-size: 24px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .version-item {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🏢</div>
+            <h1 class="title">物业管理AI系统</h1>
+            <p class="subtitle">Property Management AI System</p>
+        </div>
+
+        <div class="card">
+            <div class="version-list">
+                <a href="./mvp-prototype.html" class="version-item">
+                    <div class="version-title">
+                        <span class="version-icon">🎯</span>
+                        MVP原型版
+                        <span class="badge">推荐</span>
+                    </div>
+                    <div class="version-desc">完整功能演示，包含AI对话、文档查询、在线缴费等</div>
+                </a>
+
+                <a href="./frontend/test-standalone.html" class="version-item">
+                    <div class="version-title">
+                        <span class="version-icon">🧪</span>
+                        测试独立版
+                    </div>
+                    <div class="version-desc">独立运行测试版本，不依赖后端服务</div>
+                </a>
+
+                <a href="https://github.com/Sakee8848/property-management-ai" class="version-item" target="_blank">
+                    <div class="version-title">
+                        <span class="version-icon">💻</span>
+                        源代码仓库
+                    </div>
+                    <div class="version-desc">查看完整源代码和技术文档</div>
+                </a>
+            </div>
+
+            <div class="info-section">
+                <div class="info-title">
+                    <span>📱</span>
+                    使用说明
+                </div>
+                <ul class="info-list">
+                    <li>点击上方任意版本进入演示</li>
+                    <li>输入任意用户名和密码即可登录</li>
+                    <li>体验AI智能对话助手</li>
+                    <li>查询物业文档和缴费账单</li>
+                    <li>支持手机和电脑访问</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <div class="info-title">
+                    <span>✨</span>
+                    系统特性
+                </div>
+                <ul class="info-list">
+                    <li>AI智能客服对话</li>
+                    <li>文档智能分类管理</li>
+                    <li>在线支付模拟</li>
+                    <li>移动端完美适配</li>
+                    <li>现代化UI设计</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <a href="https://github.com/Sakee8848/property-management-ai" class="github-link" target="_blank">
+                ⭐ GitHub仓库
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 添加点击效果
+        document.querySelectorAll('.version-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                // 创建涟漪效果
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255,255,255,0.5)';
+                ripple.style.width = ripple.style.height = '100px';
+                ripple.style.left = e.clientX - this.offsetLeft - 50 + 'px';
+                ripple.style.top = e.clientY - this.offsetTop - 50 + 'px';
+                ripple.style.animation = 'ripple 0.6s ease-out';
+                ripple.style.pointerEvents = 'none';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // 添加涟漪动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                from {
+                    transform: scale(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
