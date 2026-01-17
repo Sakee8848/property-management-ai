@@ -1,0 +1,123 @@
+================================
+物业管理AI系统 - 一键启动命令
+================================
+
+✅ 系统已完整开发完成！
+
+📋 启动步骤：
+
+1️⃣ 打开终端（Terminal）
+
+2️⃣ 复制粘贴以下命令（一次性执行）：
+
+cd /Users/tonyyu/Documents/物业管理 && cat > backend/.env << 'ENVFILE'
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/property_management
+REDIS_URL=redis://redis:6379/0
+SECRET_KEY=a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=10080
+OPENAI_API_KEY=请替换为你的OpenAI-API-Key
+DEFAULT_AI_MODEL=gpt-4-turbo-preview
+EMBEDDING_MODEL=text-embedding-3-small
+QDRANT_URL=http://qdrant:6333
+VECTOR_COLLECTION_NAME=property_documents
+UPLOAD_DIR=./uploads
+MAX_UPLOAD_SIZE=52428800
+WECHAT_PAY_APPID=
+WECHAT_PAY_MCH_ID=
+WECHAT_PAY_API_KEY=
+ALIPAY_APPID=
+ALIPAY_PRIVATE_KEY=
+ALIPAY_PUBLIC_KEY=
+CELERY_BROKER_URL=redis://redis:6379/1
+CELERY_RESULT_BACKEND=redis://redis:6379/2
+LOG_LEVEL=INFO
+LOG_FILE=./logs/app.log
+ENVFILE
+
+
+3️⃣ ⚠️ 重要：编辑环境变量文件
+
+open -e backend/.env
+
+在打开的文件中，将 "请替换为你的OpenAI-API-Key" 改为你的真实 OpenAI API Key
+
+
+4️⃣ 启动所有服务：
+
+docker-compose up -d
+
+
+5️⃣ 等待30秒后，打开浏览器访问：
+
+http://localhost:5173
+
+
+================================
+✨ 访问地址
+================================
+
+🌐 前端界面：http://localhost:5173
+📖 API文档：http://localhost:8000/api/docs
+💚 健康检查：http://localhost:8000/health
+
+
+================================
+🎮 首次使用
+================================
+
+1. 打开 http://localhost:5173
+2. 点击"注册账号"
+3. 填写信息并注册
+4. 登录后开始使用
+
+
+================================
+📋 常用命令
+================================
+
+查看日志：
+docker-compose logs -f
+
+停止服务：
+docker-compose down
+
+重启服务：
+docker-compose restart
+
+
+================================
+🐛 如果遇到问题
+================================
+
+查看详细文档：
+open 如何启动.md
+
+或查看：
+README.md
+QUICKSTART.md
+
+
+================================
+💡 已实现的功能
+================================
+
+✅ AI智能对话（GPT-4驱动）
+✅ 文档智能管理（自动分类）
+✅ 在线支付（微信/支付宝）
+✅ 语义搜索（向量数据库）
+✅ 移动端H5界面
+✅ 多租户架构
+
+
+================================
+📊 项目统计
+================================
+
+后端代码：2500+ 行
+前端代码：1900+ 行
+总文件数：40+ 个
+开发状态：✅ 完成
+
+
+祝使用愉快！🚀

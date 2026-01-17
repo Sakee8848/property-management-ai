@@ -1,0 +1,63 @@
+# FastAPI 核心依赖
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# 数据库
+sqlalchemy==2.0.25
+asyncpg==0.29.0
+alembic==1.13.1
+psycopg2-binary==2.9.9
+
+# Redis 缓存
+redis==5.0.1
+hiredis==2.3.2
+
+# AI 和 LLM
+openai==1.10.0
+anthropic==0.8.1
+langchain==0.1.4
+langchain-community==0.0.16
+langchain-openai==0.0.5
+sentence-transformers==2.2.2
+
+# 向量数据库
+qdrant-client==1.7.1
+chromadb==0.4.22
+
+# 文档处理
+PyMuPDF==1.23.21
+python-docx==1.1.0
+openpyxl==3.1.2
+python-multipart==0.0.6
+Pillow==10.2.0
+pytesseract==0.3.10
+pdfplumber==0.10.3
+
+# 支付集成
+wechatpy==1.8.18
+alipay-sdk-python==3.7.868
+
+# 任务队列
+celery==5.3.6
+kombu==5.3.5
+
+# 工具库
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.0
+httpx==0.26.0
+aiofiles==23.2.1
+tenacity==8.2.3
+
+# 监控和日志
+loguru==0.7.2
+prometheus-client==0.19.0
+
+# 开发工具
+pytest==7.4.4
+pytest-asyncio==0.23.3
+black==24.1.1
+flake8==7.0.0
+mypy==1.8.0

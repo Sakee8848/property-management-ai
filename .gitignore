@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg
+*.egg-info/
+dist/
+build/
+
+# 环境变量
+.env
+.env.local
+
+# 日志
+logs/
+*.log
+
+# 数据库
+*.db
+*.sqlite
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MacOS
+.DS_Store
+
+# 上传文件
+uploads/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# 构建产物
+dist/
+build/
+.next/
+
+# 测试
+.coverage
+htmlcov/
+.pytest_cache/

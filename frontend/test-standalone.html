@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>物业管理AI助手 - 测试版</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@4/lib/index.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+            background-color: #f7f8fa;
+        }
+        #app { min-height: 100vh; padding-bottom: 50px; }
+        .login-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 20px;
+        }
+        .login-header { text-align: center; color: white; margin-bottom: 60px; }
+        .login-header h1 { font-size: 32px; margin-bottom: 10px; }
+        .header-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .ai-assistant {
+            background: white;
+            margin: 16px;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+        }
+        .ai-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+        }
+        .function-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            padding: 16px;
+        }
+        .function-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .function-item:active { transform: scale(0.95); }
+        .function-item .icon { font-size: 32px; margin-bottom: 8px; }
+        .chat-page {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #f0f2f5;
+        }
+        .message-list { flex: 1; overflow-y: auto; padding: 16px; }
+        .welcome { text-align: center; padding: 40px 20px; }
+        .welcome .icon { font-size: 60px; color: #667eea; margin-bottom: 16px; }
+        .quick-questions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+        .quick-questions button {
+            background: white;
+            border: 1px solid #667eea;
+            color: #667eea;
+            padding: 12px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .message-item { display: flex; gap: 12px; margin-bottom: 16px; }
+        .message-item.user { flex-direction: row-reverse; }
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .message-item.user .message-avatar { background: #07c160; }
+        .message-content { max-width: 70%; }
+        .message-bubble {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            word-wrap: break-word;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .message-item.user .message-bubble { background: #667eea; color: white; }
+        .input-bar {
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+        .input-bar input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 16px;
+            outline: none;
+        }
+        .input-bar button {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 24px;
+            cursor: pointer;
+        }
+        .page { min-height: 100vh; padding-bottom: 60px; }
+        .hidden { display: none !important; }
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            background: #07c160;
+            color: white;
+            margin-right: 8px;
+        }
+        .demo-badge {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #07c160;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="demo-badge">✅ 测试版运行中</div>
+
+        <!-- 登录页 -->
+        <div v-if="currentPage === 'login'" class="login-page">
+            <div class="login-header">
+                <h1>🏢 物业管理AI助手</h1>
+                <p>智能服务 · 贴心管家</p>
+            </div>
+            <van-form style="max-width: 400px; margin: 0 auto;">
+                <van-cell-group inset>
+                    <van-field v-model="loginForm.username" label="用户名" placeholder="输入任意用户名即可" />
+                    <van-field v-model="loginForm.password" type="password" label="密码" placeholder="输入任意密码即可" />
+                </van-cell-group>
+                <div style="padding: 24px 16px;">
+                    <van-button round block type="primary" @click="handleLogin">登录</van-button>
+                    <p style="text-align: center; margin-top: 12px; color: white; font-size: 13px;">
+                        测试版：输入任意用户名密码即可登录
+                    </p>
+                </div>
+            </van-form>
+        </div>
+
+        <!-- 首页 -->
+        <div v-if="currentPage === 'home'" class="page">
+            <div class="header-info">
+                <div>
+                    <h2>阳光花园小区</h2>
+                    <p>{{ loginForm.username || '测试用户' }}</p>
+                </div>
+                <span style="font-size: 24px; cursor: pointer;" @click="currentPage = 'profile'">⚙️</span>
+            </div>
+
+            <div class="ai-assistant" @click="currentPage = 'chat'">
+                <div class="ai-avatar">🤖</div>
+                <div style="flex: 1;">
+                    <h3>小管家AI助手</h3>
+                    <p style="color: #666; font-size: 13px;">有什么可以帮您的吗？</p>
+                </div>
+                <van-button type="primary" round size="small">开始对话</van-button>
+            </div>
+
+            <div class="function-grid">
+                <div class="function-item" @click="currentPage = 'chat'">
+                    <div class="icon">💬</div>
+                    <div>智能咨询</div>
+                </div>
+                <div class="function-item" @click="showToast('缴费功能演示')">
+                    <div class="icon">💰</div>
+                    <div>缴费中心</div>
+                </div>
+                <div class="function-item" @click="showToast('文档功能演示')">
+                    <div class="icon">📄</div>
+                    <div>文档查询</div>
+                </div>
+                <div class="function-item" @click="showToast('报修功能演示')">
+                    <div class="icon">🔧</div>
+                    <div>报修服务</div>
+                </div>
+                <div class="function-item" @click="showToast('投诉功能演示')">
+                    <div class="icon">⚠️</div>
+                    <div>投诉建议</div>
+                </div>
+                <div class="function-item" @click="showToast('公告功能演示')">
+                    <div class="icon">📢</div>
+                    <div>公告通知</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI聊天页 -->
+        <div v-if="currentPage === 'chat'" class="chat-page">
+            <van-nav-bar title="小管家AI助手" left-arrow @click-left="currentPage = 'home'" />
+            
+            <div class="message-list">
+                <div v-if="messages.length === 0" class="welcome">
+                    <div class="icon">🤖</div>
+                    <h3>您好！我是小管家</h3>
+                    <p style="color: #666;">有什么可以帮您的吗？</p>
+                    
+                    <div class="quick-questions">
+                        <button @click="sendQuickQuestion('物业费怎么缴纳？')">物业费怎么缴纳？</button>
+                        <button @click="sendQuickQuestion('如何报修？')">如何报修？</button>
+                        <button @click="sendQuickQuestion('停车场规定')">停车场规定</button>
+                        <button @click="sendQuickQuestion('装修手续')">装修手续</button>
+                    </div>
+                </div>
+
+                <div v-for="(msg, index) in messages" :key="index" :class="['message-item', msg.role]">
+                    <div class="message-avatar">{{ msg.role === 'user' ? '👤' : '🤖' }}</div>
+                    <div class="message-content">
+                        <div class="message-bubble">{{ msg.content }}</div>
+                        <div v-if="msg.sources" style="margin-top: 8px;">
+                            <span v-for="(source, idx) in msg.sources" :key="idx" class="tag">
+                                📄 {{ source }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-bar">
+                <input v-model="inputMessage" placeholder="请输入您的问题..." @keyup.enter="sendMessage" />
+                <button @click="sendMessage">发送</button>
+            </div>
+        </div>
+
+        <!-- 个人中心 -->
+        <div v-if="currentPage === 'profile'" class="page">
+            <div class="header-info">
+                <div>
+                    <h2>{{ loginForm.username || '测试用户' }}</h2>
+                    <p>13800138000</p>
+                </div>
+            </div>
+            <van-cell-group style="margin-top: 12px;">
+                <van-cell title="个人信息" is-link @click="showToast('个人信息')" />
+                <van-cell title="我的房产" is-link @click="showToast('1号楼 2单元 301室')" />
+                <van-cell title="缴费记录" is-link @click="showToast('缴费记录')" />
+                <van-cell title="退出登录" is-link @click="handleLogout" />
+            </van-cell-group>
+            <div style="text-align: center; padding: 20px; color: #999; font-size: 12px;">
+                <p>物业管理AI助手 v1.0.0</p>
+                <p style="margin-top: 8px;">测试版 - 所有功能正常工作</p>
+            </div>
+        </div>
+
+        <!-- 底部导航 -->
+        <van-tabbar v-if="currentPage !== 'login'" v-model="activeTab" @change="onTabChange">
+            <van-tabbar-item icon="home-o">首页</van-tabbar-item>
+            <van-tabbar-item icon="chat-o">智能咨询</van-tabbar-item>
+            <van-tabbar-item icon="bill-o">缴费</van-tabbar-item>
+            <van-tabbar-item icon="user-o">我的</van-tabbar-item>
+        </van-tabbar>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@4/lib/vant.min.js"></script>
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    currentPage: 'login',
+                    activeTab: 0,
+                    loginForm: { username: '', password: '' },
+                    messages: [],
+                    inputMessage: ''
+                };
+            },
+            methods: {
+                handleLogin() {
+                    if (!this.loginForm.username) {
+                        this.showToast('请输入用户名');
+                        return;
+                    }
+                    this.showToast('登录成功！');
+                    setTimeout(() => {
+                        this.currentPage = 'home';
+                        this.activeTab = 0;
+                    }, 500);
+                },
+                handleLogout() {
+                    vant.showConfirmDialog({
+                        title: '提示',
+                        message: '确定要退出登录吗？',
+                    }).then(() => {
+                        this.currentPage = 'login';
+                        this.messages = [];
+                        this.showToast('已退出登录');
+                    }).catch(() => {});
+                },
+                sendMessage() {
+                    if (!this.inputMessage.trim()) return;
+                    
+                    this.messages.push({
+                        role: 'user',
+                        content: this.inputMessage
+                    });
+                    
+                    const question = this.inputMessage;
+                    this.inputMessage = '';
+                    
+                    setTimeout(() => {
+                        this.messages.push(this.getAIResponse(question));
+                        this.$nextTick(() => {
+                            const list = document.querySelector('.message-list');
+                            if (list) list.scrollTop = list.scrollHeight;
+                        });
+                    }, 800);
+                },
+                sendQuickQuestion(question) {
+                    this.inputMessage = question;
+                    this.sendMessage();
+                },
+                getAIResponse(question) {
+                    const responses = {
+                        '物业费怎么缴纳？': {
+                            content: '您可以通过以下方式缴纳物业费：\n\n1. 在线缴费：点击"缴费中心"选择账单进行支付\n2. 微信支付：关注物业公众号进行缴费\n3. 支付宝：搜索"物业缴费"小程序\n4. 现场缴费：到物业服务中心办理\n\n物业费缴费期限为每月月底前，逾期将产生滞纳金。',
+                            sources: ['物业缴费指南']
+                        },
+                        '如何报修？': {
+                            content: '报修服务流程：\n\n1. 在线报修：点击首页"报修服务"填写报修信息\n2. 电话报修：拨打物业服务热线 400-123-4567\n3. 现场报修：到物业服务中心前台登记\n\n我们承诺：\n- 紧急维修30分钟内响应\n- 一般维修24小时内处理',
+                            sources: ['报修服务指南']
+                        },
+                        '停车场规定': {
+                            content: '小区停车管理规定：\n\n1. 车位分配：业主优先，先到先得\n2. 收费标准：业主500元/月，临时停车5元/小时\n3. 停车时间：24小时开放\n4. 注意事项：按指定位置停放，禁止占用消防通道',
+                            sources: ['停车管理办法']
+                        },
+                        '装修手续': {
+                            content: '装修申请流程：\n\n1. 提交资料：装修申请表、装修方案图纸、施工单位资质\n2. 缴纳押金：装修保证金3000元\n3. 装修时间：工作日 8:00-12:00, 14:00-18:00\n4. 验收通过后退还押金',
+                            sources: ['装修申请流程']
+                        }
+                    };
+                    
+                    return responses[question] || {
+                        content: '感谢您的咨询！我是物业AI助手小管家。\n\n您的问题已记录，我会为您查询相关信息。如需紧急帮助，请拨打物业服务热线：400-123-4567',
+                        sources: ['物业服务手册']
+                    };
+                },
+                showToast(message) {
+                    vant.showToast(message);
+                },
+                onTabChange(index) {
+                    const pages = ['home', 'chat', 'bills', 'profile'];
+                    this.currentPage = pages[index];
+                }
+            },
+            watch: {
+                currentPage(newPage) {
+                    const pageMap = { 'home': 0, 'chat': 1, 'bills': 2, 'profile': 3 };
+                    if (pageMap[newPage] !== undefined) {
+                        this.activeTab = pageMap[newPage];
+                    }
+                }
+            }
+        }).use(vant).mount('#app');
+    </script>
+</body>
+</html>
